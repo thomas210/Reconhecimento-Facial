@@ -7,6 +7,7 @@ A IMAGEM NA PASTA ESPECIFICADA'''
 
 camera = cv2.VideoCapture(0)
 caminhoDetector = 'C:\Python27\Lib\site-packages\cv2\data/haarcascade_frontalface_default.xml'
+caminhoTreinamento = 'F:\Faculdade\PLF\Reconhecimento-Facial/treinamento/p2'	#CAMINHO ONDE VAI SER SALVO
 
 #FUNCAO DE DETECCAO DE FACE
 def detectarFace (frame):
@@ -25,10 +26,11 @@ while(camera.isOpened()):
 		for (x,y,w,h) in faces:
 			cv2.rectangle(frameCopia, (x,y), (x+w, y+h), (0,255,0),2)	#MOSTRA A FACE RECONHECIDA
 			if len(faces) == 1:
-				caminho = 'F:\Faculdade\PLF\Projeto/treinamento/p3'	#CAMINHO ONDE VAI SER SALVO
+				caminho = caminhoTreinamento	
 				string = str(numero)	#NUMERO DO ARQUIVO
 				salvar = caminho + '/' + string + '.png'
-				cv2.imwrite(salvar, frame)
+				gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+				cv2.imwrite(salvar, gray[y:y+w, x:x+h])
 				numero = numero + 1
 		cv2.imshow('camera', frameCopia)
 		if cv2.waitKey(1) & 0xff == ord('q'):
