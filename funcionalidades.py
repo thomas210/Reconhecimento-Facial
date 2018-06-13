@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import os
 
-caminhoDetector = 'C:\Python27\Lib\site-packages\cv2\data/haarcascade_frontalface_default.xml'	
+caminhoDetector = 'haarcascade_frontalface_default.xml'	
 
 #PESSOAS COM AS IMAGENS DE TREINO
 pessoas = []
@@ -25,7 +25,8 @@ def reconhecerRosto(cpf):
 	pastaTreinamento = os.getcwd() + '/cadastros'
 	if os.path.exists(pastaTreinamento + '/' + cpf) == False:
 		os.mkdir(pastaTreinamento + '/' + cpf)
-	while(camera.isOpened()):
+	limite = 0
+	while(camera.isOpened() and limite < 100):
 		ret,frame = camera.read()
 		frameCopia = frame.copy()
 		if (ret):
@@ -39,6 +40,7 @@ def reconhecerRosto(cpf):
 					gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 					cv2.imwrite(salvar, gray[y:y+w, x:x+h])
 					numero = numero + 1
+					limite = limite + 1
 			cv2.imshow('camera', frameCopia)
 			if cv2.waitKey(1) & 0xff == ord('q'):
 				break
@@ -132,6 +134,7 @@ while True :
 		reconhecerRosto(nome)
 	elif escolha == 'chamada' :
 		print 'cadastrados'
+		pessoas = []
 		preencherPessoas()
 		print pessoas
 		print 'Iniciando chamada'
