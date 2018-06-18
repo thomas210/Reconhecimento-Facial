@@ -26,7 +26,7 @@ def reconhecerRosto(cpf):
 	if os.path.exists(pastaTreinamento + '/' + cpf) == False:
 		os.mkdir(pastaTreinamento + '/' + cpf)
 	limite = 0
-	while(camera.isOpened() and limite < 100):
+	while(camera.isOpened() and limite < 200):
 		ret,frame = camera.read()
 		frameCopia = frame.copy()
 		if (ret):
@@ -56,9 +56,10 @@ def gerarAmostra ():
 	labels = []
 	caminho = os.getcwd() + '/cadastros'
 	ordem = os.listdir(caminho)	#VAI NO DIRETORIO
-	numero = 0
+	numero = -1
 	for pastaPessoa in ordem:
 		caminhoPessoa = caminho + '/' + pastaPessoa
+		numero = numero + 1
 		listaImagens = os.listdir(caminhoPessoa)
 		for imagemPessoa in listaImagens:	
 			caminhoImagem = caminhoPessoa + '/' + imagemPessoa
