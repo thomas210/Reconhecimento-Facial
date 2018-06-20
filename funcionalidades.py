@@ -20,13 +20,13 @@ def detectarFace (frame):
 
 
 def reconhecerRosto(cpf):
+	listaRostos = []
 	camera = cv2.VideoCapture(0)
 	numero = 0;
 	pastaTreinamento = os.getcwd() + '/cadastros'
 	if os.path.exists(pastaTreinamento + '/' + cpf) == False:
 		os.mkdir(pastaTreinamento + '/' + cpf)
-	limite = 0
-	while(camera.isOpened() and limite < 200):
+	while(camera.isOpened() and numero < 100):
 		ret,frame = camera.read()
 		frameCopia = frame.copy()
 		if (ret):
@@ -38,15 +38,17 @@ def reconhecerRosto(cpf):
 					string = str(numero)	#NUMERO DO ARQUIVO
 					salvar = caminho + '/' + string + '.png'
 					gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-					cv2.imwrite(salvar, gray[y:y+w, x:x+h])
+					#cv2.imwrite(salvar, gray[y:y+w, x:x+h])
+					listaRostos.append(gray[y:y+w, x:x+h])
 					numero = numero + 1
-					limite = limite + 1
 			cv2.imshow('camera', frameCopia)
-			if cv2.waitKey(1) & 0xff == ord('q'):
-				break
 	camera.release()
 	cv2.destroyAllWindows()
-
+	numero = 0
+	for imagem in listaRostos:
+		salvar = caminho + '/' + str(numero) + '.png'
+		cv2.imwrite(salvar, imagem)
+		numero = numero + 1
 	
 #FUNCAO QUE FAZ A CRIACAO DAS AMOSTRAS, PEGA AS IMAGENS NO DIRETORIO E DETECTA A FACE E COLOCA NO VETOR
 #DE TREINO QUE SERA UTILIZADO NO RECONHECIMENTO		
